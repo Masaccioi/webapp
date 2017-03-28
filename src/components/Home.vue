@@ -2,52 +2,33 @@
   <header>
     <i class="el-icon-menu menu"></i>
     <div>
-      <span>{{data.results[0].location.name}}</span>
+      <span></span>
       <i class=""></i>
     </div>
     <i class="el-icon-setting setting"></i>
-    <div>{{data.results[0].hourly[0].text}}</div>
+    <div>{{show}}</div>
   </header>
   
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'hello',
   data () {
     return {
-      currentCity: this.$store.state.currentCity,
-      data: '',
-      msg: ''
+      city: this.$store.state.currentCity,
+      tempNow: '',
+      tempHourly: [],
+      tempdaily: []
     }
   },
   created () {
-    this.fetch()
+    this.$store.dispatch('GET_HOURLY')
   },
-  methods: {
-    fetch1 () {
-      let url = 'https://crossorigin.me/https://api.seniverse.com/v3/weather/now.json?&key=ia5o9dx2c8gailyr&language=zh-Hans&unit=c&'
-      url = url + 'location=' + this.currentCity
-      this.$http.get(url)
-        .then(response => {
-          this.data = response.data
-          console.log(this.data)
-        })
-        .catch()
-    },
-    fetch () {
-      let url = 'https://crossorigin.me/https://api.seniverse.com/v3/weather/hourly.json?key=ia5o9dx2c8gailyr&location=beijing&language=zh-Hans&unit=c&start=0&hours=24'
-      // url = url + 'location=' + 'ip'
-      this.$http.get(url)
-        .then(response => {
-          this.data = response.data
-          console.log(this.data)
-        })
-        .catch(response => {
-          console.log(response)
-        })
-    }
-  }
+  computed: mapGetters([
+    'show'
+  ])
 }
 </script>
 
